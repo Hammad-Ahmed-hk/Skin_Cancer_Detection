@@ -1,236 +1,46 @@
-**Skin Cancer Detection using Digital Image Processing**
+# Skin Lesion Analysis with Digital Image Processing
 
-This project focuses on detecting skin cancer using dermoscopic images from the PH2 dataset. The complete pipeline includes mask generation, lesion segmentation, feature extraction, and classification using a Random Forest model.
+A university Digital Image Processing project that walks through a classic computer-vision pipeline on dermoscopic images from the **PH2 dataset**: mask generation, lesion segmentation, feature extraction and Random Forest classification.
 
-The work was developed as part of a Digital Image Processing course project.
+> ## ⚠️ Not a diagnostic tool
+> The notebook **creates a dummy `Target` column** (a random 50/50 split) when no real labels are present. The classifier is therefore trained on artificial labels, and the reported accuracy (about 0.65), sensitivity (0.6) and specificity (0.7) **carry no medical meaning**. The value of this project is the image-processing pipeline, not the classification result. Do not use it for any health decision.
 
-Project Overview
+## Pipeline
 
-Skin cancer detection can be improved with computer vision and machine learning. In this project:
+1. **Mount Google Drive** (the notebook is written for Google Colab).
+2. **Explore the dataset**: walk the PH2 folders and load sample images.
+3. **Generate masks**: create a lesion mask for each image and save it as `.png` in `generated_masks/`.
+4. **Segment**: resize each image to 256 × 256, combine it with its mask using `cv2.bitwise_and`, and save the result in `Segmented_Images/`.
+5. **Extract features**: convert each segmented image to grayscale, take the lesion pixels and compute statistical features. They are saved to `Feature_Extracted.xlsx`.
+6. **Train**: `RandomForestClassifier` (200 trees), 80/20 stratified split.
+7. **Evaluate**: confusion matrix, accuracy, sensitivity and specificity.
 
-Dermoscopic images are loaded from the dataset.
+## Dataset
 
-Lesion masks are generated.
+[PH2 dermoscopic image database](https://www.fc.up.pt/addi/ph2%20database.html): `.bmp` dermoscopic images with lesion masks and clinical annotations. The dataset is **not included** in this repository; download it yourself and respect its terms of use.
 
-Images are segmented using those masks.
+## Run it
 
-Features are extracted from segmented lesions.
+1. Download PH2 and upload it to Google Drive.
+2. Open `Projec_Skin_Cancer_Detection_2023_SE_01.ipynb` in Google Colab.
+3. Edit `project_path` (and the dataset paths below it). They are hardcoded to `/content/drive/MyDrive/OEL/...` and will not exist on your Drive.
+4. Run the cells in order: masks, segmentation, feature extraction, training.
 
-A Random Forest classifier is trained to classify lesions.
+Libraries: Python, OpenCV, NumPy, pandas, Matplotlib, scikit-learn.
 
-The notebook runs step by step from preprocessing to evaluation.
+## Limitations
 
-Dataset
+- Labels are dummy labels, so the model has learned nothing clinical.
+- Paths are tied to one Google Drive layout.
+- No cross-validation, no deep-learning model, no clinical validation.
 
-Dataset used: PH2 Skin Lesion Dataset
+## Future improvements
 
-Image format: .bmp
+- Join the real PH2 diagnosis labels (common nevus, atypical nevus, melanoma) to each image
+- Add texture, shape and colour features
+- Compare against a CNN
+- Use cross-validation and report results per class
 
-Each case contains:
+## Author
 
-Dermoscopic image
-
-Associated lesion mask
-
-The dataset was accessed from Google Drive inside Google Colab.
-
-Project Pipeline
-1. Mount Google Drive
-
-The notebook mounts Google Drive to access:
-
-Dataset images
-
-Generated masks
-
-Extracted features
-
-Saved outputs
-
-2. Dataset Exploration
-
-The code:
-
-Navigates dataset directories
-
-Lists IMD folders
-
-Identifies dermoscopic image folders
-
-Loads sample images
-
-This ensures correct path handling before processing.
-
-3. Mask Generation
-
-Masks are generated and saved in a separate folder:
-
-generated_masks/
-
-
-For each image:
-
-Mask is created
-
-Saved as .png
-
-Used later for segmentation
-
-4. Image Segmentation
-
-Each dermoscopic image is:
-
-Resized to 256 × 256
-
-Combined with its corresponding mask
-
-Segmented using cv2.bitwise_and
-
-Segmented images are saved in:
-
-Segmented_Images/
-
-
-This step isolates the lesion from the background.
-
-5. Feature Extraction
-
-For each segmented image:
-
-Converted to grayscale
-
-Lesion pixels extracted
-
-Statistical features calculated
-
-Features are saved into an Excel file:
-
-Feature_Extracted.xlsx
-
-
-These features are later used for model training.
-
-6. Model Training
-
-The classification model used:
-
-Random Forest Classifier
-
-200 estimators
-
-80/20 train-test split
-
-Stratified sampling
-
-Libraries used:
-
-scikit-learn
-
-pandas
-
-numpy
-
-Important Note About Labels
-
-The notebook creates a dummy Target column if one does not exist.
-
-This means:
-
-The model is trained on artificial labels.
-
-The current accuracy does not represent real medical performance.
-
-For real-world use:
-
-Proper ground truth labels must be added.
-
-Diagnosis information should be linked to each image.
-
-7. Evaluation Metrics
-
-The following metrics are calculated:
-
-Confusion Matrix
-
-Accuracy
-
-Sensitivity (Recall for malignant class)
-
-Specificity
-
-These help evaluate classification performance.
-
-Technologies Used
-
-Python
-
-OpenCV
-
-NumPy
-
-Pandas
-
-Matplotlib
-
-Scikit-learn
-
-Google Colab
-
-Folder Structure
-Project/
-│
-├── PH2Dataset/
-│   ├── PH2 Dataset images/
-│   ├── generated_masks/
-│
-├── Segmented_Images/
-│
-├── Feature_Extracted.xlsx
-│
-└── Skin_Cancer_Detection.ipynb
-
-How to Run
-
-Upload dataset to Google Drive.
-
-Open the notebook in Google Colab.
-
-Update the project_path if needed.
-
-Run cells step by step:
-
-Mask generation
-
-Segmentation
-
-Feature extraction
-
-Model training
-
-Limitations
-
-Uses manually created or dummy labels.
-
-No deep learning model.
-
-No cross-validation.
-
-No real clinical validation.
-
-Future Improvements
-
-Use real diagnosis labels.
-
-Add more advanced features (texture, shape, color histogram).
-
-Apply CNN-based deep learning models.
-
-Deploy as a web application.
-
-Add performance comparison between models.
-
-Author
-
-Hammad Ahmed
-BS Software Engineering
-Digital Image Processing Project
+Hammad Ahmed, BS Software Engineering, [@Hammad-Ahmed-hk](https://github.com/Hammad-Ahmed-hk)
